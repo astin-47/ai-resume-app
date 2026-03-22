@@ -41,7 +41,7 @@
       document.getElementById("output").innerText = "Generating...";
       document.getElementById("resultBox").style.display = "block";
 
-      const res = await fetch("http://localhost:8000/generate", {
+      const res = await fetch("https://ai-resume-app-dkz8.onrender.com/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
