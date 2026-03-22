@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HireBoost AI</title>
+</head>
+<body style="font-family: Arial; background:#f5f5f5;">
+
+  <div style="max-width:800px;margin:auto;padding:20px;">
+    
+    <h1 style="text-align:center;">🚀 HireBoost AI</h1>
+    <p style="text-align:center;">Get ATS-optimized resumes & cover letters instantly</p>
+
+    <div style="background:white;padding:20px;border-radius:10px;">
+      
+      <h3>Paste Resume</h3>
+      <textarea id="resume" rows="6" style="width:100%;padding:10px;"></textarea>
+
+      <h3>Paste Job Description</h3>
+      <textarea id="jobDesc" rows="6" style="width:100%;padding:10px;"></textarea>
+
+      <br><br>
+      <button onclick="generate()" style="width:100%;padding:12px;background:black;color:white;border:none;border-radius:5px;">
+        Generate Resume
+      </button>
+
+    </div>
+
+    <div id="resultBox" style="margin-top:20px;display:none;">
+      <h3>Result</h3>
+      <div style="background:white;padding:20px;border-radius:10px;white-space:pre-wrap;" id="output"></div>
+      <button onclick="download()" style="margin-top:10px;">Download</button>
+    </div>
+
+  </div>
+
+  <script>
+    async function generate() {
+      const resume = document.getElementById("resume").value;
+      const jobDesc = document.getElementById("jobDesc").value;
+
+      document.getElementById("output").innerText = "Generating...";
+      document.getElementById("resultBox").style.display = "block";
+
+      const res = await fetch("http://localhost:8000/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ resume, jobDesc })
+      });
+
+      const data = await res.json();
+      document.getElementById("output").innerText = data.result;
+    }
+  </script>
+  <script>
+function download() {
+  const text = document.getElementById("output").innerText;
+  const blob = new Blob([text], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "resume.txt";
+  link.click();
+}
+</script>
+
+</body>
+</html>
